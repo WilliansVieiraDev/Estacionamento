@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar e Alterar Garagens</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Listar e Alterar Garagens</h1>
+        <button id="novoButton">Novo</button>
+        <table id="garagens" class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Total de Vagas</th>
+                    <th>Vagas Preenchidas</th>
+                    <th>Ordem</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div id="novoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Nova Garagem</h2>
+            <form id="novaGaragemForm">
+                <label for="nomeNovaGaragem">Nome:</label>
+                <input type="text" id="nomeNovaGaragem" required>
+                <label for="totalVagasNovaGaragem">Total de Vagas:</label>
+                <input type="number" id="totalVagasNovaGaragem" required>
+                <label for="vagasPreenchidasNovaGaragem">Vagas Preenchidas:</label>
+                <input type="number" id="vagasPreenchidasNovaGaragem" value="0" required>
+                <label for="ordemNovaGaragem">Ordem:</label>
+                <input type="number" id="ordemNovaGaragem" required>
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="listar-alterar.js"></script>
+</body>
+</html>
