@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     vagasDisponiveis.textContent = garagem.vagasDisponiveis;
 
                     const estacionarButton = document.createElement('button');
-                    estacionarButton.textContent = 'Estacionar';
+                    estacionarButton.textContent = 'Check in';
                     estacionarButton.onclick = () => estacionarVeiculo(garagem.nome);
 
                     const liberarButton = document.createElement('button');
