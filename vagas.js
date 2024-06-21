@@ -12,13 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     garagemDiv.className = 'garagem';
 
                     const garagemName = document.createElement('h2');
-                    if(garagem.vagasPreenchidas > 0)
-                        garagemName.textContent = garagem.nome + " - " + garagem.vagasPreenchidas + " presentes";
-                    else
-                        garagemName.textContent = garagem.nome;
+                   
+                    garagemName.textContent = garagem.nome;
 
                     const vagasDisponiveis = document.createElement('p');
-                    vagasDisponiveis.textContent = garagem.vagasDisponiveis;
+                    vagasDisponiveis.textContent = garagem.vagasPreenchidas + "/" + garagem.totalVagas;
 
                     garagemDiv.appendChild(garagemName);
                     garagemDiv.appendChild(vagasDisponiveis);
