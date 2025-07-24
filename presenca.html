@@ -7,64 +7,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f9;
+
+    body, html {
       margin: 0;
       padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      color: white;
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+
+    #reader-container {
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      width: 95%;
+      max-width: 420px;
       text-align: center;
     }
-    header {
-      background-color: #4a90e2;
-      color: white;
-      padding: 20px 10px;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-    #reader-container {
-      margin: 20px auto;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 95%;
-      max-width: 400px;
-    }
+
     #reader {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
     }
+
     #status {
       margin-top: 15px;
       font-size: 1.1em;
-      color: #ff9800;
+      color: #ffeb3b;
     }
+
     #output {
       margin-top: 10px;
-      font-size: 1.2em;
+      font-size: 1.3em;
       color: #4caf50;
       font-weight: bold;
     }
+
     #restart-button {
       display: none;
       margin-top: 20px;
       padding: 10px 20px;
       font-size: 1em;
-      background-color: #4a90e2;
+      background-color: #2196f3;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
     }
+
     footer {
-      margin-top: 30px;
-      font-size: 0.8em;
-      color: #999;
+      text-align: center;
+      font-size: 0.9em;
+      color: #ccc;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
+
+  <!-- Fundo com vídeo -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="https://gosp.org.br/storage/2024/03/vd-gosp.mp4#t=0,10000" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
 
   <header>Leitor de QR Code</header>
 
