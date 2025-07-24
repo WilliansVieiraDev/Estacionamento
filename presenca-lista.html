@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Presença</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      text-align: center;
+    }
+
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    table {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    #mensagem {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Convidados Presentes</header>
+
+  <div id="mensagem">Carregando lista...</div>
+
+  <table id="tabelaPresenca" style="display:none;">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Data e Hora</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca')
+      .then(response => {
+        if (!response.ok) throw new Error("Erro ao carregar dados");
+        return response.json();
+      })
+      .then(presencas => {
+        const tabela = document.getElementById('tabelaPresenca');
+        const tbody = tabela.querySelector('tbody');
+        const mensagem = document.getElementById('mensagem');
+
+        if (presencas.length === 0) {
+          mensagem.innerText = "Nenhuma presença registrada ainda.";
+          return;
+        }
+
+        presencas.forEach(p => {
+          const tr = document.createElement('tr');
+          
+          const tdCodigo = document.createElement('td');
+          tdCodigo.innerText = p.codigo;
+          tr.appendChild(tdCodigo);
+
+          const tdData = document.createElement('td');
+          const dataHora = new Date(p.dataHora);
+          tdData.innerText = dataHora.toLocaleString('pt-BR');
+          tr.appendChild(tdData);
+
+          tbody.appendChild(tr);
+        });
+
+        mensagem.style.display = "none";
+        tabela.style.display = "table";
+      })
+      .catch(error => {
+        document.getElementById('mensagem').innerText = "Erro ao carregar lista de presença.";
+        console.error(error);
+      });
+  </script>
+
+</body>
+</html>

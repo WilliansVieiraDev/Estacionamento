@@ -85,12 +85,14 @@
       Html5Qrcode.getCameras().then(cameras => {
         if (cameras && cameras.length) {
           document.getElementById("status").innerText = "Aguardando leitura...";
+
           html5QrCode.start(
             { facingMode: "environment" },
             { fps: 10, qrbox: { width: 250, height: 250 } },
             qrCodeMessage => {
               document.getElementById("output").innerText = `Código lido: ${qrCodeMessage}`;
               document.getElementById("status").innerText = "🔄 Enviando presença...";
+
               html5QrCode.stop().then(() => {
                 document.getElementById("restart-button").style.display = "inline-block";
               });
@@ -104,10 +106,15 @@
               })
               .then(response => {
                 if (response.ok) {
-                  document.getElementById("status").innerText = "✅ Presença registrada com sucesso!";
+                  return response.json();
                 } else {
-                  document.getElementById("status").innerText = "⚠️ Erro ao registrar presença.";
+                  throw new Error("Erro ao registrar presença.");
                 }
+              })
+              .then(data => {
+                document.getElementById("status").innerText = "✅ " + data.mensagem;
+                console.log(data);
+                document.getElementById("output").innerText = "";
               })
               .catch(error => {
                 document.getElementById("status").innerText = "❌ Falha ao conectar ao servidor.";
@@ -135,7 +142,6 @@
       iniciarLeitor();
     }
 
-    // Iniciar leitor assim que a página carregar
     window.onload = iniciarLeitor;
   </script>
 
