@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Leitor de QR Code</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px 10px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    #reader-container {
+      margin: 20px auto;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 95%;
+      max-width: 400px;
+    }
+    #reader {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: #ff9800;
+    }
+    #output {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #4caf50;
+      font-weight: bold;
+    }
+    #restart-button {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 0.8em;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Leitor de QR Code</header>
+
+  <div id="reader-container">
+    <div id="reader"></div>
+    <div id="status">Aguardando permissão para a câmera...</div>
+    <div id="output"></div>
+    <button id="restart-button" onclick="reiniciarLeitura()">Nova Leitura</button>
+  </div>
+
+  <footer>Desenvolvido para leitura rápida de presença</footer>
+
+  <script>
+    let html5QrCode;
+
+    function iniciarLeitor() {
+      html5QrCode = new Html5Qrcode("reader");
+      Html5Qrcode.getCameras().then(cameras => {
+        if (cameras && cameras.length) {
+          document.getElementById("status").innerText = "Aguardando leitura...";
+          html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            qrCodeMessage => {
+              document.getElementById("output").innerText = `Código lido: ${qrCodeMessage}`;
+              document.getElementById("status").innerText = "🔄 Enviando presença...";
+              html5QrCode.stop().then(() => {
+                document.getElementById("restart-button").style.display = "inline-block";
+              });
+
+              fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ codigo: qrCodeMessage })
+              })
+              .then(response => {
+                if (response.ok) {
+                  document.getElementById("status").innerText = "✅ Presença registrada com sucesso!";
+                } else {
+                  document.getElementById("status").innerText = "⚠️ Erro ao registrar presença.";
+                }
+              })
+              .catch(error => {
+                document.getElementById("status").innerText = "❌ Falha ao conectar ao servidor.";
+                console.error("Erro:", error);
+              });
+            },
+            errorMessage => {
+              // Ignorar erros de leitura
+            }
+          ).catch(err => {
+            document.getElementById("status").innerText = `Erro ao iniciar câmera: ${err}`;
+          });
+        } else {
+          document.getElementById("status").innerText = "Nenhuma câmera encontrada.";
+        }
+      }).catch(err => {
+        document.getElementById("status").innerText = "Permissão negada ou erro ao acessar a câmera.";
+      });
+    }
+
+    function reiniciarLeitura() {
+      document.getElementById("output").innerText = "";
+      document.getElementById("status").innerText = "Reiniciando leitura...";
+      document.getElementById("restart-button").style.display = "none";
+      iniciarLeitor();
+    }
+
+    // Iniciar leitor assim que a página carregar
+    window.onload = iniciarLeitor;
+  </script>
+
+</body>
+</html>
