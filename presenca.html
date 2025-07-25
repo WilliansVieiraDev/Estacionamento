@@ -84,6 +84,29 @@
       cursor: pointer;
     }
 
+    #manual-input {
+      margin-top: 20px;
+    }
+
+    #nome-manual {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    #btn-manual {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     footer {
       text-align: center;
       font-size: 0.9em;
@@ -107,6 +130,13 @@
     <div id="status">Aguardando permissão para a câmera...</div>
     <div id="output"></div>
     <button id="restart-button" onclick="reiniciarLeitura()">Nova Leitura</button>
+
+    <!-- Entrada manual -->
+    <div id="manual-input">
+      <input type="text" id="nome-manual" placeholder="Digite o nome do convidado">
+      <br>
+      <button id="btn-manual" onclick="registrarManual()">Registrar Manualmente</button>
+    </div>
   </div>
 
   <footer>Desenvolvido para leitura rápida de presença</footer>
@@ -124,39 +154,13 @@
             { facingMode: "environment" },
             { fps: 10, qrbox: { width: 250, height: 250 } },
             qrCodeMessage => {
-              document.getElementById("output").innerText = `Código lido: ${qrCodeMessage}`;
-              document.getElementById("status").innerText = "🔄 Enviando presença...";
-
+              processarPresenca(qrCodeMessage);
               html5QrCode.stop().then(() => {
                 document.getElementById("restart-button").style.display = "inline-block";
               });
-
-              fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ codigo: qrCodeMessage })
-              })
-              .then(response => {
-                if (response.ok) {
-                  return response.json();
-                } else {
-                  throw new Error("Erro ao registrar presença.");
-                }
-              })
-              .then(data => {
-                document.getElementById("status").innerText = "✅ " + data.mensagem;
-                console.log(data);
-                document.getElementById("output").innerText = "";
-              })
-              .catch(error => {
-                document.getElementById("status").innerText = "❌ Falha ao conectar ao servidor.";
-                console.error("Erro:", error);
-              });
             },
             errorMessage => {
-              // Ignorar erros de leitura
+              // silencioso
             }
           ).catch(err => {
             document.getElementById("status").innerText = `Erro ao iniciar câmera: ${err}`;
@@ -166,6 +170,53 @@
         }
       }).catch(err => {
         document.getElementById("status").innerText = "Permissão negada ou erro ao acessar a câmera.";
+      });
+    }
+
+    function processarPresenca(codigo) {
+      document.getElementById("output").innerText = `Código: ${codigo}`;
+      document.getElementById("status").innerText = "🔄 Enviando presença...";
+
+      fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo })
+      })
+      .then(response => response.ok ? response.json() : Promise.reject("Erro ao registrar presença"))
+      .then(data => {
+        document.getElementById("status").innerText = "✅ " + data.mensagem;
+        document.getElementById("output").innerText = "";
+      })
+      .catch(error => {
+        document.getElementById("status").innerText = "❌ Erro ao conectar com servidor.";
+        console.error("Erro:", error);
+      });
+    }
+
+    function registrarManual() {
+      const nome = document.getElementById("nome-manual").value.trim();
+      if (nome === "") {
+        document.getElementById("status").innerText = "Digite um nome válido.";
+        return;
+      }
+
+      document.getElementById("status").innerText = "🔄 Registrando presença manual...";
+      document.getElementById("output").innerText = `Nome: ${nome}`;
+
+      fetch('https://sislojaestacionamentoapi.azurewebsites.net/registrar-manualmente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome })
+      })
+      .then(response => response.ok ? response.json() : Promise.reject("Erro ao registrar presença manual"))
+      .then(data => {
+        document.getElementById("status").innerText = "✅ " + data.mensagem;
+        document.getElementById("output").innerText = "";
+        document.getElementById("nome-manual").value = "";
+      })
+      .catch(error => {
+        document.getElementById("status").innerText = "❌ Erro ao registrar presença manual.";
+        console.error("Erro:", error);
       });
     }
 
