@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Excluir Presenças - Congresso GOSP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+    input[type="password"] {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      width: 100%;
+      max-width: 300px;
+      margin: 10px auto;
+      display: block;
+    }
+    button {
+      background-color: #e53935;
+      border: none;
+      color: white;
+      padding: 14px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .mensagem {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #00e676;
+    }
+    .erro {
+      color: #ff5252;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Excluir Todos os Registros</h1>
+    <p>Digite a senha para confirmar a exclusão de todas as presenças registradas.</p>
+    <input type="password" id="senha" placeholder="Digite a senha">
+    <button onclick="excluirDados()">Excluir Todos os Dados</button>
+    <div id="mensagem" class="mensagem"></div>
+  </div>
+
+  <script>
+    async function excluirDados() {
+      const senha = document.getElementById('senha').value;
+      const mensagem = document.getElementById('mensagem');
+      mensagem.textContent = '';
+      mensagem.classList.remove('erro');
+
+      if (senha !== 'lucas123') {
+        mensagem.textContent = 'Senha incorreta.';
+        mensagem.classList.add('erro');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca', {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          mensagem.textContent = 'Todos os dados foram excluídos com sucesso!';
+          mensagem.classList.remove('erro');
+        } else {
+          mensagem.textContent = 'Erro ao excluir os dados.';
+          mensagem.classList.add('erro');
+        }
+      } catch (error) {
+        mensagem.textContent = 'Erro de conexão com o servidor.';
+        mensagem.classList.add('erro');
+      }
+    }
+  </script>
+
+</body>
+</html>

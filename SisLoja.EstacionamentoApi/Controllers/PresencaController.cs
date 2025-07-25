@@ -100,6 +100,15 @@ namespace SisLoja.EstacionamentoApi.Controllers
             return Ok(lista);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete()
+        {
+            await _context.Presencas
+                .ExecuteDeleteAsync();
+
+            return NoContent();
+        }
+
         public class PresencaInput
         {
             public string Codigo { get; set; }
