@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Presença - Congresso GOSP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 800px;
+      margin: 80px auto 40px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    .mensagem-bem-vindo {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      font-size: 2rem;
+      color: #fff;
+      padding-top: 50px;
+    }
+    .mensagem-bem-vindo img {
+      width: 700px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Presenças de Hoje</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Código</th>
+          <th>Horário</th>
+        </tr>
+      </thead>
+      <tbody id="lista-presencas"></tbody>
+    </table>
+  </div>
+
+  <div class="mensagem-bem-vindo" id="bemVindo">
+    <img src="logo-gosp.jpg" alt="Logo GOSP">
+    <div style="margin-top: 20px;">Seja bem vindo:</div>
+    <div id="nomeVisitante" style="font-weight:bold; font-size:2.5rem; margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    let nomesExibidos = new Set();
+
+    function exibirMensagem(nome) {
+      const popup = document.getElementById('bemVindo');
+      document.getElementById('nomeVisitante').innerText = nome;
+      popup.style.display = 'flex';
+
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 5000);
+    }
+
+    async function carregarPresencas() {
+      try {
+        const response = await fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca');
+        const dados = await response.json();
+
+        const hoje = new Date().toISOString().split('T')[0];
+        const presencasHoje = dados.filter(p => new Date(p.dataHora).toISOString().startsWith(hoje));
+
+        const tbody = document.getElementById("lista-presencas");
+        tbody.innerHTML = '';
+
+        presencasHoje.sort((a, b) => new Date(b.dataHora) - new Date(a.dataHora));
+
+        presencasHoje.forEach(p => {
+          if (!nomesExibidos.has(p.nome)) {
+            nomesExibidos.add(p.nome);
+            exibirMensagem(p.nome);
+          }
+
+          const hora = new Date(p.dataHora).toLocaleTimeString('pt-BR', {
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+          });
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${p.nome}</td><td>${p.codigo}</td><td>${hora}</td>`;
+          tbody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Erro ao carregar presenças:", err);
+      }
+    }
+
+    setInterval(carregarPresencas, 5000);
+    carregarPresencas();
+  </script>
+</body>
+</html>

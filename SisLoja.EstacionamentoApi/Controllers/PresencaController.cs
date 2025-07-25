@@ -37,7 +37,7 @@ namespace SisLoja.EstacionamentoApi.Controllers
                 {
                     Codigo = input.Codigo,
                     Nome = convidado.Nome,
-                    DataHora = DateTime.UtcNow
+                    DataHora = DateTime.UtcNow.AddHours(-3)
                 };
 
                 _context.Presencas.Add(novaPresenca);

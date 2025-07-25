@@ -203,7 +203,7 @@
       document.getElementById("status").innerText = "🔄 Registrando presença manual...";
       document.getElementById("output").innerText = `Nome: ${nome}`;
 
-      fetch('https://sislojaestacionamentoapi.azurewebsites.net/registrar-manualmente', {
+      fetch('https://sislojaestacionamentoapi.azurewebsites.net/presenca/registrar-manualmente', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome })
