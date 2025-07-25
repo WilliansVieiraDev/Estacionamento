@@ -136,7 +136,7 @@
       if (!confirm("Deseja realmente excluir esta presença?")) return;
 
       try {
-        const response = await fetch(`https://sislojaestacionamentoapi.azurewebsites.net/presenca/by-id/${id}`, {
+        const response = await fetch(`https://sislojaestacionamentoapi.azurewebsites.net/presenca/by-id?id=${id}`, {
           method: 'DELETE'
         });
 
