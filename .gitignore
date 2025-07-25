@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SisLoja.EstacionamentoApi/.vs
+/SisLoja.EstacionamentoApi/bin
+/SisLoja.EstacionamentoApi/obj
