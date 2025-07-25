@@ -76,6 +76,19 @@
       font-size: 0.9rem;
       color: #ccc;
     }
+
+    button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
   </style>
 </head>
 <body>
@@ -100,9 +113,7 @@
       <tbody id="resumo-diario"></tbody>
     </table>
 
-    <div id="presencas-por-dia">
-      <!-- As listas por dia serão inseridas aqui -->
-    </div>
+    <div id="presencas-por-dia"></div>
 
     <div class="footer">Atualizado em tempo real</div>
   </div>
@@ -118,6 +129,26 @@
 
       } catch (error) {
         console.error("Erro ao carregar presenças:", error);
+      }
+    }
+
+    async function excluirPresenca(id) {
+      if (!confirm("Deseja realmente excluir esta presença?")) return;
+
+      try {
+        const response = await fetch(`https://sislojaestacionamentoapi.azurewebsites.net/presenca/by-id/${id}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          alert("Presença excluída com sucesso!");
+          carregarPresencas();
+        } else {
+          alert("Erro ao excluir presença.");
+        }
+      } catch (err) {
+        console.error("Erro ao excluir presença:", err);
+        alert("Erro ao excluir presença.");
       }
     }
 
@@ -173,6 +204,7 @@
               <th>Nome</th>
               <th>Código</th>
               <th>Horário</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -180,7 +212,13 @@
               .sort((a, b) => new Date(b.dataHora) - new Date(a.dataHora))
               .map(p => {
                 const hora = new Date(p.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                return `<tr><td>${p.nome}</td><td>${p.codigo}</td><td>${hora}</td></tr>`;
+                return `
+                  <tr>
+                    <td>${p.nome}</td>
+                    <td>${p.codigo}</td>
+                    <td>${hora}</td>
+                    <td><button onclick="excluirPresenca(${p.id})">Excluir</button></td>
+                  </tr>`;
               }).join('')}
           </tbody>
         `;
@@ -191,6 +229,5 @@
     setInterval(carregarPresencas, 5000);
     carregarPresencas();
   </script>
-
 </body>
 </html>

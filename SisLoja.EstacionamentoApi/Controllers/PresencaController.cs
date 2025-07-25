@@ -12,7 +12,7 @@ namespace SisLoja.EstacionamentoApi.Controllers
         public PresencaController(AppDbContext context, List<Convidado> convidados)
         {
             _context = context;
-            _convidados = convidados;   
+            _convidados = convidados;
         }
 
         [HttpPost]
@@ -47,7 +47,7 @@ namespace SisLoja.EstacionamentoApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
 
                 throw;
             }
@@ -105,6 +105,17 @@ namespace SisLoja.EstacionamentoApi.Controllers
         {
             await _context.Presencas
                 .ExecuteDeleteAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("by-id")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Presenca presenca = await _context.Presencas.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+            _context.Presencas.Remove(presenca);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
