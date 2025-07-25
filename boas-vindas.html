@@ -6,14 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
       color: white;
       overflow-x: hidden;
+      position: relative;
     }
+
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
     .container {
       max-width: 800px;
       margin: 80px auto 40px;
@@ -21,26 +42,34 @@
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 1;
     }
+
     h1 {
       text-align: center;
       font-size: 2rem;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
+
     th, td {
       padding: 12px;
       text-align: left;
     }
+
     th {
       background-color: rgba(255, 255, 255, 0.2);
     }
+
     tr:nth-child(even) {
       background-color: rgba(255, 255, 255, 0.05);
     }
+
     .mensagem-bem-vindo {
       display: none;
       position: fixed;
@@ -58,6 +87,7 @@
       color: #fff;
       padding-top: 50px;
     }
+
     .mensagem-bem-vindo img {
       width: 700px;
       margin-top: 20px;
@@ -65,6 +95,16 @@
   </style>
 </head>
 <body>
+
+  <!-- Vídeo de fundo -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="https://gosp.org.br/storage/2024/03/vd-gosp.mp4#t=0,10000" type="video/mp4">
+  </video>
+
+  <!-- Camada escura sobre o vídeo -->
+  <div class="overlay"></div>
+
+  <!-- Conteúdo principal -->
   <div class="container">
     <h1>Presenças de Hoje</h1>
     <table>
@@ -79,9 +119,10 @@
     </table>
   </div>
 
+  <!-- Mensagem de boas-vindas -->
   <div class="mensagem-bem-vindo" id="bemVindo">
     <img src="logo-gosp.jpg" alt="Logo GOSP">
-    <div style="margin-top: 20px;">Seja bem vindo:</div>
+    <div style="margin-top: 20px;">Seja bem-vindo:</div>
     <div id="nomeVisitante" style="font-weight:bold; font-size:2.5rem; margin-top: 20px;"></div>
   </div>
 
