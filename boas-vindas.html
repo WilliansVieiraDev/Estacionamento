@@ -129,9 +129,9 @@
   <script>
     let nomesExibidos = new Set();
 
-    function exibirMensagem(nome) {
+    function exibirMensagem(codigo, nome) {
       const popup = document.getElementById('bemVindo');
-      document.getElementById('nomeVisitante').innerText = nome;
+      document.getElementById('nomeVisitante').innerText = codigo + ' - ' + nome;
       popup.style.display = 'flex';
 
       setTimeout(() => {
@@ -155,7 +155,7 @@
         presencasHoje.forEach(p => {
           if (!nomesExibidos.has(p.nome)) {
             nomesExibidos.add(p.nome);
-            exibirMensagem(p.nome);
+            exibirMensagem(p.codigo, p.nome);
           }
 
           const hora = new Date(p.dataHora).toLocaleTimeString('pt-BR', {
