@@ -1,0 +1,38 @@
+Total não enviados: 34
+
+Nome                                               CIM          Motivo
+------------------------------------------------------------------------------------------
+JADSON MAGNO DA SILVA                              -            Sem CIM
+Joseff Gomes da Silva                              -            Sem CIM
+FLAVIO DEL MATTO FARIA                             521275       {'error': 'CIM 521275 não possui telefone WhatsApp válido.'}
+Matheus Santos de Castro                           521330       {'error': 'CIM 521330 não possui telefone WhatsApp válido.'}
+marcos antonio santos alves                        -            Sem CIM
+PEDRO BRITO                                        117          {'error': 'CIM 117 não encontrado ou inativo.'}
+Rodrigo Bonifácio Fernandes                        170111       {'error': 'CIM 170111 não encontrado ou inativo.'}
+JOAO T. VARANDAS                                   172755       {'error': 'CIM 172755 não encontrado ou inativo.'}
+Eustazio Alves Pereira Filho                       192265       {'error': 'CIM 192265 não encontrado ou inativo.'}
+Kennedy Rodrigues                                  1995         {'error': 'CIM 1995 não encontrado ou inativo.'}
+Thiago José Isola                                  228795       {'error': 'CIM 228795 não possui telefone WhatsApp válido.'}
+Carlos Eduardo Da Costa Machado                    233248       {'error': 'CIM 233248 não encontrado ou inativo.'}
+Carlos Machado                                     235340       {'error': 'CIM 235340 não possui telefone WhatsApp válido.'}
+Paulo Victor Prado Moreira                         2389         {'error': 'CIM 2389 não encontrado ou inativo.'}
+Francisco Matias                                   245345       {'error': 'CIM 245345 não encontrado ou inativo.'}
+BENEDITO RODRIGUES                                 251437       {'error': 'CIM 251437 não encontrado ou inativo.'}
+Carlos Eduardo Garcia filho                        270212       {'error': 'CIM 270212 não possui telefone WhatsApp válido.'}
+Ricardo Chicolli                                   275617       {'error': 'CIM 275617 não encontrado ou inativo.'}
+Marcos Milanez Rodrigues                           284694       {'error': 'CIM 284694 não encontrado ou inativo.'}
+WASHINGTON PEDROSO                                 28485        {'error': 'CIM 28485 não encontrado ou inativo.'}
+ALEXANDRE VIEIRA                                   309662       {'error': 'CIM 309662 não encontrado ou inativo.'}
+Carlos Heriberto Pulcinelli Júnior                 511046       {'error': 'CIM 511046 não encontrado ou inativo.'}
+Luiz Felipe Da Rocha                               518704       {'error': 'CIM 518704 não encontrado ou inativo.'}
+JORGE SUNAO KOTO                                   519659       {'error': 'CIM 519659 não encontrado ou inativo.'}
+Gabriel Domingos Isola                             520938       {'error': 'CIM 520938 não possui telefone WhatsApp válido.'}
+Victor Carmo                                       520165       {'error': 'CIM 520165 não possui telefone WhatsApp válido.'}
+Caique Lucchetta                                   520901       {'error': 'CIM 520901 não possui telefone WhatsApp válido.'}
+André Mello                                        520920       {'error': 'CIM 520920 não possui telefone WhatsApp válido.'}
+Tiago Faria                                        521165       {'error': 'CIM 521165 não possui telefone WhatsApp válido.'}
+Cleyton Endo                                       521262       {'error': 'CIM 521262 não possui telefone WhatsApp válido.'}
+Ricardo Panucci                                    521276       {'error': 'CIM 521276 não possui telefone WhatsApp válido.'}
+Raul Barbosa da Silva                              521297       {'error': 'CIM 521297 não possui telefone WhatsApp válido.'}
+João Mauricio Marques da Silva                     521334       {'error': 'CIM 521334 não possui telefone WhatsApp válido.'}
+Gabriel Dornela Alves da Rocha                     521340       {'error': 'CIM 521340 não possui telefone WhatsApp válido.'}
